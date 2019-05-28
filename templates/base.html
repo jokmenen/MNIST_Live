@@ -1,0 +1,31 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script type=text/javascript src={{url_for('static', filename="jquery-3.4.1.min.js") }}></script>
+<script type=text/javascript src="{{
+  url_for('static', filename='CanvasDrawer.js') }}"></script>
+<nav>
+  <h1>Digit Recognizer</h1>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+    <div id = "cap">
+    <div class = "mainCV">
+        <canvas id="DigitCanvas" width="16" height="16">
+
+        </canvas>
+    </div></div>
+    <div id = "mainControls">
+        <button type="button" name = "Reset" id="reset">Reset</button>
+        <button type="button" name = "Predict" id="predict">Predict</button>
+        <label id="Predict_L">Click Predict to make a prediction</label>
+    </div>
+
+
+</section>
