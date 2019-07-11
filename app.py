@@ -16,6 +16,7 @@ from keras.layers.core import Dense, Dropout, Activation
 from keras.optimizers import Adam
 from keras.models import model_from_json
 from keras.backend import clear_session
+import keras
 from sklearn.preprocessing import StandardScaler
 ##########
 
@@ -31,8 +32,9 @@ with open("mnist.json") as json:
 
 model = model_from_json(model_json)
 model.load_weights("mnist.h5")
-opt = Adam(lr = 0.01)
-model.compile(optimizer=opt, loss = "categorical_crossentropy")
+model.compile(loss=keras.losses.categorical_crossentropy,
+              optimizer=keras.optimizers.Adadelta(),
+              metrics=['accuracy'])
 ################
 
 
@@ -62,7 +64,8 @@ def processImage():
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     image = Image.open(BytesIO(img_b))
     image = image.convert("L")  # Convert to grayscale
-    image = image.resize((8,8), Image.NEAREST) # Resize to 8*8 with Nearest resampling. Nearest seemed the best method.
+    print(image.size)
+    image = image.resize((28,28), Image.NEAREST) # Resize to 8*8 with Nearest resampling. Nearest seemed the best method. TODO magic number, make it load from settings
     image.save('img2.png', 'PNG') #DEBUG
 
     np_im = numpy.array(image) #Transform into numpy array for doing the prediction
@@ -72,8 +75,10 @@ def processImage():
 
     #scaler = StandardScaler()
     #np_im = scaler.fit_transform(np_im)
-    np_im = ((np_im*-1) + 255)/255*16 #Invert colors and scale to 4 bit pixels
-
+    #np_im = ((np_im*-1) + 255)/255*16 #Invert colors and scale to 4 bit pixels
+    print(np_im, "\n\n\nAFTER\n\n\n")
+    np_im = numpy.invert(np_im)
+    print(np_im)
     #np_im = numpy.dot(np_im,16)
 
     #DEBUG
@@ -83,8 +88,9 @@ def processImage():
     #/DEBUG
 
     #Reshape for use in model
-    np_im = np_im.reshape((1,64))
+    np_im = np_im.reshape((1,28,28,1)) #TODO magic number, make it load from settings
     np_im = np_im.astype("int").astype("float32") # Rounding Cheeze
+    np_im /= 255
     #return str(np_im.shape)
 
     # This graph stuff is again needed for running tf in Flask

@@ -1,0 +1,3 @@
+11-7-19: This file was created to log changes to the model. The previous model used the load_digits data from sklearn, but since these are only 250 images, the model did not really perform well in the real world.
+	Therefore, a new model will be trained on the MNIST dataset.
+	Also changed model to CNN instead of regular NN

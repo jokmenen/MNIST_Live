@@ -5,7 +5,7 @@
             var canvas=document.getElementById("DigitCanvas");
             var cntx=canvas.getContext("2d");
             cntx.strokeStyle="black";
-            cntx.lineWidth=2;
+            cntx.lineWidth=4;
             cntx.lineCap="round";
             cntx.fillStyle="#fff";
             cntx.fillRect(0,0,canvas.width,canvas.height);
@@ -58,7 +58,7 @@
                 cntx.fillStyle="black"
             });
 
-            $("#predict").click(function(e){
+            $("#DigitCanvas").mouseup(function(e){
                 var image = new Image();
                 image.id = "pic";
                 image.src = canvas.toDataURL();
